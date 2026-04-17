@@ -31,7 +31,7 @@ export function KeyModal({ isOpen, onClose, onSave, currentKey }: KeyModalProps)
           <div className="space-y-2">
             <label className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Active API Key</label>
             <Input
-              placeholder="Paste your API key here..."
+              placeholder="(Paste your Gemini API key)"
               value={key}
               onChange={(e) => setKey(e.target.value)}
               type="password"

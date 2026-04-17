@@ -2,6 +2,7 @@ import { useState } from "react";
 import { KeyModal } from "./components/KeyModal";
 import { ImageUploader } from "./components/ImageUploader";
 import { AnalysisResult } from "./components/AnalysisResult";
+import { SpecimenJournal } from "./components/SpecimenJournal";
 import { analyzeImage } from "./lib/gemini";
 import type { BiodiversityInfo } from "./lib/gemini";
 import { Button } from "./components/ui/button";
@@ -15,6 +16,10 @@ function App() {
   const [result, setResult] = useState<BiodiversityInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [tempKey, setTempKey] = useState("");
+  const [history, setHistory] = useState<BiodiversityInfo[]>(() => {
+    const saved = localStorage.getItem("naturenode_history");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const handleSaveKey = (key: string) => {
     setApiKey(key);
@@ -37,19 +42,29 @@ function App() {
       const data = await analyzeImage(file, apiKey);
       // Generate a stable ID for the specimen
       data.id = Math.random().toString(36).substring(2, 8).toUpperCase();
+      
       setResult(data);
+      
+      // Update history
+      const newHistory = [data, ...history].slice(0, 20); // Keep last 20
+      setHistory(newHistory);
+      localStorage.setItem("naturenode_history", JSON.stringify(newHistory));
+
       // Smooth scroll to results
       setTimeout(() => {
         document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     } catch (err) {
       console.error(err);
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      setError(
-        errorMessage.includes("API key not valid")
-          ? "Invalid API key. Please check your settings."
-          : "An error occurred during image analysis. Please try again."
-      );
+      let errorMessage = err instanceof Error ? err.message : String(err);
+      
+      if (errorMessage.includes("429") || errorMessage.includes("quota") || errorMessage.includes("limit")) {
+        errorMessage = "API Quota exceeded or limit reached (429). Please wait a moment or check your API plan at Google AI Studio.";
+      } else if (errorMessage.includes("404")) {
+        errorMessage = "Model not found (404). This might be due to regional restrictions or model deprecation.";
+      }
+      
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +73,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col items-center selection:bg-primary/20">
       <nav className="w-full border-b bg-background sticky top-0 z-50">
-        <div className="container mx-auto max-w-6xl h-16 flex items-center justify-between px-6">
+        <div className="container mx-auto max-w-6xl h-16 flex items-center justify-center px-6 relative">
           <div className="flex items-center gap-3">
             <div className="p-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20">
               <Leaf className="w-5 h-5" />
@@ -66,7 +81,7 @@ function App() {
             <span className="font-serif font-bold text-2xl tracking-tight">NatureNode</span>
           </div>
           {apiKey && (
-            <div className="flex items-center gap-2">
+            <div className="absolute right-6 flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -82,12 +97,10 @@ function App() {
       </nav>
 
       <main className="flex-1 w-full max-w-4xl mx-auto py-16 px-6 relative flex flex-col items-center overflow-hidden">
-        {/* Large background decorative element */}
-        <div className="absolute top-40 -left-20 w-96 h-96 bg-primary/3 rounded-full blur-3xl pointer-events-none -z-10" />
-        <Leaf className="absolute top-20 -left-20 w-80 h-80 text-primary/3 -rotate-12 pointer-events-none -z-10" />
 
         {!apiKey ? (
           <section className="w-full max-w-2xl flex flex-col items-center text-center animate-in fade-in slide-in-from-bottom-8 duration-1000">
+
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm font-bold mb-8 border border-primary/10 shadow-sm">
               <Globe className="w-4 h-4" />
               Biodiversity Research Tool
@@ -95,44 +108,32 @@ function App() {
             <h1 className="text-5xl md:text-8xl font-bold mb-8 leading-[0.95] text-balance tracking-tighter">
               Identify the <span className="text-primary italic font-serif">living world</span> around you.
             </h1>
-            <p className="text-xl text-muted-foreground mb-12 max-w-xl leading-relaxed font-medium opacity-80">
+            <p className="text-xl text-muted-foreground mb-12 max-w-xl leading-relaxed font-medium opacity-80 text-center">
               NatureNode uses advanced AI to identify species and help you understand our planet's biodiversity. To begin, connect your Google Gemini API key.
             </p>
             
             <div className="relative w-full max-w-md p-8 rounded-3xl bg-card border border-border botanical-shadow overflow-hidden">
-              {/* Decorative background element */}
-              <Leaf className="absolute -bottom-8 -right-8 w-32 h-32 text-primary/5 -rotate-12 pointer-events-none" />
               
               <div className="flex flex-col gap-6 relative z-10">
-                <div className="flex justify-between items-start mb-2">
-                  <div className="space-y-1">
-                    <label htmlFor="api-key" className="text-sm font-bold flex items-center gap-2 text-primary">
-                      <Key className="w-4 h-4" />
-                      Gemini API Access
-                    </label>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
-                      NatureNode Access
-                    </p>
+                <div className="flex flex-col items-center mb-2">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-2">
+                    <Key className="w-6 h-6" />
                   </div>
                 </div>
 
-                <div className="space-y-2 text-left">
+                <div className="space-y-2 text-center">
                   <Input
                     id="api-key"
                     type="password"
-                    placeholder="AIzaSy..."
+                    placeholder="(Paste your Gemini API key)"
                     value={tempKey}
                     onChange={(e) => setTempKey(e.target.value)}
-                    className="h-12 px-4 rounded-xl border-border bg-background focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-all"
+                    className="h-12 px-4 rounded-xl border-border bg-background focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-all text-center"
                   />
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-center items-center">
                     <p className="text-[11px] text-muted-foreground">
                       Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="text-primary hover:underline font-bold">AI Studio</a>
                     </p>
-                    <div className="flex gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/10" />
-                    </div>
                   </div>
                 </div>
 
@@ -149,7 +150,7 @@ function App() {
           </section>
         ) : (
           <div className="w-full flex flex-col items-center">
-            <header className="text-center mb-16 animate-in fade-in duration-700">
+            <header className="text-center mb-16 animate-in fade-in duration-700 flex flex-col items-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Start your discovery</h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Upload a photo of any plant, animal, or insect to get an instant botanical identification and ecological insights.
@@ -183,51 +184,57 @@ function App() {
                 </div>
               </section>
             )}
+
+            <SpecimenJournal 
+              history={history} 
+              onSelect={(specimen) => {
+                setResult(specimen);
+                setTimeout(() => {
+                  document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
+                }, 100);
+              }} 
+            />
           </div>
         )}
       </main>
 
-      <footer className="w-full border-t py-12 bg-background/50 backdrop-blur-sm">
+      <footer className="w-full border-t py-16 bg-muted/30">
         <div className="container mx-auto max-w-6xl px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-12">
-            <div className="flex flex-col items-center md:items-start gap-4 max-w-sm">
-              <div className="flex items-center gap-2">
-                <Leaf className="w-5 h-5 text-primary" />
-                <span className="text-xl font-serif font-bold tracking-tight">NatureNode</span>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
+            <div className="md:col-span-2 space-y-6">
+              <div className="flex items-center justify-center md:justify-start gap-3">
+                <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                  <Leaf className="w-5 h-5" />
+                </div>
+                <span className="text-2xl font-serif font-bold tracking-tight">NatureNode</span>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed text-center md:text-left">
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto md:mx-0">
                 Advanced botanical identification platform for researchers and nature enthusiasts. 
                 Utilizing state-of-the-art AI to map and protect global biodiversity.
               </p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mt-2">
-                © 2026 NatureNode • Earth Day Edition
-              </p>
+              <div className="pt-4">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] font-bold">
+                  © JOHNNYLEMONNY • Earth Day Edition
+                </p>
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-primary">Resources</h4>
+              <ul className="space-y-4 text-sm">
+                <li><a href="https://aistudio.google.com/" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-medium">Gemini AI Studio</a></li>
+                <li><a href="https://www.gbif.org/" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-medium">Global Biodiversity Info</a></li>
+                <li><a href="https://ai.google.dev/gemini-api/docs" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors font-medium">API Documentation</a></li>
+              </ul>
             </div>
 
-            <div className="grid grid-cols-2 gap-12 md:gap-24">
-              <div className="flex flex-col gap-4">
-                <h4 className="text-xs font-bold uppercase tracking-widest text-primary">Resources</h4>
-                <div className="flex flex-col gap-2 text-sm">
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Project Info</a>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Documentation</a>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">API Guide</a>
-                </div>
-              </div>
-              <div className="flex flex-col gap-4">
-                <h4 className="text-xs font-bold uppercase tracking-widest text-primary">Platform</h4>
-                <div className="flex flex-col gap-2 text-sm">
-                  {apiKey && (
-                    <button 
-                      onClick={() => setIsKeyModalOpen(true)}
-                      className="text-muted-foreground hover:text-primary transition-colors text-left"
-                    >
-                      Settings
-                    </button>
-                  )}
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Sustainability</a>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy</a>
-                </div>
-              </div>
+            <div className="space-y-6">
+              <h4 className="text-xs font-bold uppercase tracking-widest text-primary">Community</h4>
+              <ul className="space-y-4 text-sm">
+                <li><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Science Blog</button></li>
+                <li><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Sustainability</button></li>
+                <li><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Privacy & Safety</button></li>
+              </ul>
             </div>
           </div>
         </div>
