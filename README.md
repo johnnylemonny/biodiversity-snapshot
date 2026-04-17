@@ -1,57 +1,59 @@
-# 🌿 NatureNode | JOHNNYLEMONNY Edition
+# 🌿 NatureNode
 
 [![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38bdf8)](https://tailwindcss.com/)
 [![Gemini API](https://img.shields.io/badge/Gemini%20API-3.0%20Flash-orange)](https://ai.google.dev/)
+[![PWA](https://img.shields.io/badge/PWA-Ready-green)](https://vite-pwa-org.netlify.app/)
 
-**NatureNode** is a premium botanical identification platform. It combines advanced AI with a "Botanical Precision" aesthetic to transform photos into detailed ecological field notes, promoting environmental awareness.
+**NatureNode** is a professional biodiversity research and identification tool. Designed for field researchers and nature enthusiasts, it leverages state-of-the-art AI to transform simple photos into comprehensive ecological dossiers.
 
 ## 🌟 Key Features
 
-- **Botanical Precision Design**: A centered, balanced layout with OKLCH color system, professional typography (Zilla Slab), and paper-like textures.
-- **Specimen Journal**: Keep track of your discoveries with a persistent local history of identified species.
-- **Instant Identification**: Uses the **Gemini 3 Flash** model to recognize flora and fauna with high accuracy.
-- **📱 PWA & Offline Ready**: Install as a mobile app for field research with offline support.
-- **🌍 Geographic Tracking**: Automatically captures specimen coordinates and displays them on a location map.
-- **Ecological Field Notes**: Detailed insights into conservation status, habitats, and ecological roles.
-- **Actionable Conservation**: Specific steps to protect identified species and their environments.
-- **Privacy First (BYOK)**: "Bring Your Own Key" strategy – your API key is stored only locally in your browser.
+-   **Botanical Precision UI**: A high-density, research-oriented design system using Tailwind CSS v4 and the OKLCH color model for superior visual clarity.
+-   **AI-Driven Identification**: Powered by **Google Gemini 3 Flash** for instant, high-accuracy recognition of plants, animals, insects, and fungi.
+-   **Specimen Journal**: A persistent, local history of all your discoveries, allowing you to build your own personal biodiversity database.
+-   **📱 PWA & Offline Support**: Fully installable as a Progressive Web App. Designed to work in the field with robust offline capabilities.
+-   **🗺️ Manual Location Mapping**: Easily log observation points by town or area name.
+-   **📍 Google Maps Integration**: One-click navigation and mapping of find locations directly in Google Maps.
+-   **Ecological Insights**: Detailed data on conservation status (IUCN), habitats, native ranges, and protection guidelines for every specimen.
+-   **Privacy First**: Your Gemini API key and discovery history are stored safely in your local browser storage—never on a server.
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React 19 + TypeScript + Vite 8
-- **Styling**: Tailwind CSS v4 + Lucide Icons
-- **AI**: Google Generative AI SDK (@google/generative-ai)
-- **Design**: OKLCH Color Model for accessible, vibrant palettes
+-   **Core**: React 19 (App Router patterns) + TypeScript
+-   **Build Tool**: Vite 8 (Rolldown)
+-   **Styling**: Tailwind CSS v4 + Lucide Icons
+-   **PWA**: Vite PWA Plugin + Workbox
+-   **AI**: Google Generative AI SDK
 
 ## 🚀 Getting Started
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/johnnylemonny/naturenode.git
-   cd naturenode
-   ```
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/johnnylemonny/naturenode.git
+    cd naturenode
+    ```
 
-2. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
+2.  **Install dependencies**:
+    ```bash
+    pnpm install
+    ```
 
-3. **Run locally**:
-   ```bash
-   pnpm dev
-   ```
+3.  **Launch the lab**:
+    ```bash
+    pnpm dev
+    ```
 
-4. **API Key**:
-   The app will prompt you for a Gemini API key. You can get one for free at [Google AI Studio](https://aistudio.google.com/app/apikey).
+4.  **Configuration**:
+    The application requires a Gemini API key. Obtain a free key from [Google AI Studio](https://aistudio.google.com/app/apikey) and enter it in the app settings.
 
-## 🌍 Environmental Impact
+## 🌍 Vision
 
-This project was created to build ecological awareness. We believe that understanding the nature around us is the first step toward protecting it.
+NatureNode was built to foster a deeper connection between technology and the natural world. By making biodiversity data accessible and engaging, we aim to inspire conservation efforts and ecological awareness globally.
 
 ## 📜 License
 
 MIT
 
 ---
-*Created by JOHNNYLEMONNY.*
+*Developed with ❤️ by [Janek](https://github.com/johnnylemonny).*
