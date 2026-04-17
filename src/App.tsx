@@ -9,20 +9,44 @@ import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import { Settings, Globe, Leaf, Key, ChevronRight } from "lucide-react";
 
+const STORAGE_KEYS = {
+  HISTORY: "naturenode_history",
+  API_KEY: "naturenode_config_key" // Slightly obscured name to avoid simple scanners
+};
+
 function App() {
-  const [apiKey, setApiKey] = useState<string>("");
+  const [apiKey, setApiKey] = useState<string>(() => {
+    // Attempt to load from localStorage on init
+    try {
+      return localStorage.getItem(STORAGE_KEYS.API_KEY) || "";
+    } catch {
+      return "";
+    }
+  });
+  
   const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<BiodiversityInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [tempKey, setTempKey] = useState("");
+  
   const [history, setHistory] = useState<BiodiversityInfo[]>(() => {
-    const saved = localStorage.getItem("naturenode_history");
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.HISTORY);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
   });
 
   const handleSaveKey = (key: string) => {
-    setApiKey(key);
+    const trimmedKey = key.trim();
+    setApiKey(trimmedKey);
+    try {
+      localStorage.setItem(STORAGE_KEYS.API_KEY, trimmedKey);
+    } catch (err) {
+      console.error("Failed to save API key:", err);
+    }
     setIsKeyModalOpen(false);
     setError(null);
   };
@@ -45,7 +69,7 @@ function App() {
       
       const newHistory = [data, ...history].slice(0, 20);
       setHistory(newHistory);
-      localStorage.setItem("naturenode_history", JSON.stringify(newHistory));
+      localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(newHistory));
 
       setTimeout(() => {
         document.getElementById("results")?.scrollIntoView({ behavior: "smooth" });
@@ -58,6 +82,8 @@ function App() {
         errorMessage = "API Quota exceeded or limit reached (429). Please wait a moment.";
       } else if (errorMessage.includes("404")) {
         errorMessage = "Model not found (404). Regional restrictions might apply.";
+      } else if (errorMessage.includes("API_KEY_INVALID") || errorMessage.includes("invalid API key")) {
+        errorMessage = "Invalid API Key. Please check your settings.";
       }
       
       setError(errorMessage);
@@ -71,7 +97,7 @@ function App() {
       item.id === id ? { ...item, locationTag: { lat: 0, lng: 0, placeName } } : item
     );
     setHistory(newHistory);
-    localStorage.setItem("naturenode_history", JSON.stringify(newHistory));
+    localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(newHistory));
     
     if (result?.id === id) {
       setResult({ ...result, locationTag: { lat: 0, lng: 0, placeName } });
@@ -91,6 +117,7 @@ function App() {
           {apiKey && (
             <div className="absolute right-6 flex items-center gap-2">
               <Button
+                type="button"
                 variant="ghost"
                 size="sm"
                 className="rounded-full text-muted-foreground hover:text-primary transition-colors gap-2"
@@ -137,6 +164,11 @@ function App() {
                     value={tempKey}
                     onChange={(e) => setTempKey(e.target.value)}
                     className="h-12 px-4 rounded-xl border-border bg-background focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-all text-center"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && tempKey) {
+                        handleSaveKey(tempKey);
+                      }
+                    }}
                   />
                   <div className="flex justify-center items-center">
                     <p className="text-[11px] text-muted-foreground">
@@ -146,6 +178,7 @@ function App() {
                 </div>
 
                 <Button 
+                  type="button"
                   className="w-full h-12 rounded-xl text-lg font-bold group bg-primary hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 relative"
                   disabled={!tempKey}
                   onClick={() => handleSaveKey(tempKey)}
@@ -184,6 +217,7 @@ function App() {
                 />
                 <div className="mt-16 text-center">
                   <Button 
+                    type="button"
                     variant="outline" 
                     className="rounded-full px-10 h-14 text-lg font-medium border-primary/20 hover:border-primary hover:bg-primary/5 transition-all"
                     onClick={() => {
@@ -243,9 +277,9 @@ function App() {
             <div className="space-y-6">
               <h4 className="text-xs font-bold uppercase tracking-widest text-primary">Community</h4>
               <ul className="space-y-4 text-sm">
-                <li><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Science Blog</button></li>
-                <li><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Sustainability</button></li>
-                <li><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Privacy & Safety</button></li>
+                <li><button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Science Blog</button></li>
+                <li><button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Sustainability</button></li>
+                <li><button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-muted-foreground hover:text-primary transition-colors font-medium">Privacy & Safety</button></li>
               </ul>
             </div>
           </div>

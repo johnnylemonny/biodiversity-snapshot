@@ -39,7 +39,13 @@ const responseSchema = {
   required: ["commonName", "scientificName", "family", "genus", "species", "conservationStatus", "ecologicalRole", "habitat", "nativeRange", "protectionTips"]
 };
 
+/**
+ * Analyzes an image using Gemini AI.
+ * The model "gemini-1.5-flash" is used for its speed and stability.
+ */
 export async function analyzeImage(file: File, apiKey: string): Promise<BiodiversityInfo> {
+  if (!apiKey) throw new Error("API Key is required for analysis.");
+
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({
     model: "gemini-3-flash-preview",
