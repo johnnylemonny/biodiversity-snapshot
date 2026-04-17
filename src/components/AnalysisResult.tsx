@@ -191,16 +191,16 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
             {isEditing ? (
               <div className="space-y-4 relative z-10 animate-in fade-in zoom-in-95 duration-300">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Miejscowość / Lokalizacja</label>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Town / Location</label>
                   <Input 
-                    placeholder="np. Warszawa, Puszcza Białowieska"
+                    placeholder="e.g. London, Yellowstone National Park"
                     value={placeName} 
                     onChange={(e) => handleUpdate(e.target.value)}
                     className="h-12 rounded-xl border-primary/10 focus-visible:ring-primary/20 bg-background/50 backdrop-blur-sm"
                   />
                 </div>
                 <p className="text-[10px] text-muted-foreground text-center italic">
-                  Wpisz nazwę miejscowości lub obszaru, gdzie dokonano obserwacji.
+                  Enter the name of the town or area where the observation was made.
                 </p>
               </div>
             ) : (
@@ -209,9 +209,9 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
                   <MapPin className="w-6 h-6 text-primary" />
                 </div>
                 <div className="space-y-1 px-4">
-                  <h4 className="text-sm font-bold">Lokalizacja znaleziska</h4>
+                  <h4 className="text-sm font-bold">Observation Location</h4>
                   <p className="text-xs text-muted-foreground font-medium truncate max-w-[200px]">
-                    {placeName || "Nie określono"}
+                    {placeName || "Not specified"}
                   </p>
                 </div>
                 <Button
@@ -222,7 +222,7 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
                   onClick={openInGoogleMaps}
                 >
                   <ExternalLink className="w-3 h-3" />
-                  Zobacz w Google Maps
+                  View on Google Maps
                 </Button>
               </div>
             )}
