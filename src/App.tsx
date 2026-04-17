@@ -1,23 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { KeyModal } from "./components/KeyModal";
 import { ImageUploader } from "./components/ImageUploader";
 import { AnalysisResult } from "./components/AnalysisResult";
-import { analyzeImage, BiodiversityInfo } from "./lib/gemini";
+import { analyzeImage } from "./lib/gemini";
+import type { BiodiversityInfo } from "./lib/gemini";
 import { Button } from "./components/ui/button";
 import { Settings, Globe, Leaf } from "lucide-react";
 
 function App() {
-  const [apiKey, setApiKey] = useState<string>(localStorage.getItem("gemini_api_key") || "");
-  const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
+  const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem("gemini_api_key") || "");
+  const [isKeyModalOpen, setIsKeyModalOpen] = useState(() => !localStorage.getItem("gemini_api_key"));
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<BiodiversityInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!apiKey) {
-      setIsKeyModalOpen(true);
-    }
-  }, [apiKey]);
 
   const handleSaveKey = (key: string) => {
     setApiKey(key);
@@ -39,10 +35,11 @@ function App() {
     try {
       const data = await analyzeImage(file, apiKey);
       setResult(data);
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
+      const errorMessage = err instanceof Error ? err.message : String(err);
       setError(
-        err.message?.includes("API key not valid")
+        errorMessage.includes("API key not valid")
           ? "Invalid API key. Please check your settings."
           : "An error occurred during image analysis. Please try again."
       );
