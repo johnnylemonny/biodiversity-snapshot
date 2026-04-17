@@ -192,7 +192,7 @@ function App() {
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                   >
-                    Scan another object
+                    Scan another specimen
                   </Button>
                 </div>
               </section>
@@ -213,8 +213,8 @@ function App() {
 
       <footer className="w-full border-t py-16 bg-muted/30">
         <div className="container mx-auto max-w-6xl px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
-            <div className="md:col-span-2 space-y-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left">
+            <div className="col-span-2 space-y-6">
               <div className="flex items-center justify-center md:justify-start gap-3">
                 <div className="p-2 rounded-xl bg-primary/10 text-primary">
                   <Leaf className="w-5 h-5" />

@@ -104,11 +104,12 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
               <Button
                 variant="outline"
                 size="sm"
-                className="flex-1 rounded-2xl h-12 gap-2 border-primary/20 hover:bg-primary/5 font-bold text-xs"
+                disabled={!placeName}
+                className="flex-1 rounded-2xl h-12 gap-2 border-primary/20 hover:bg-primary/5 font-bold text-xs disabled:opacity-50 disabled:grayscale"
                 onClick={openInGoogleMaps}
               >
                 <Globe2 className="w-4 h-4 text-primary" />
-                Open Maps
+                {placeName ? "Open Maps" : "Location Needed"}
                 <ExternalLink className="w-3 h-3 opacity-50" />
               </Button>
             </div>
@@ -119,7 +120,7 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
       {/* Details Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="specimen-card rounded-4xl p-8">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-3 mb-6 text-center md:text-left">
             <div className="p-2 rounded-xl bg-primary/10 text-primary">
               <Info className="w-5 h-5" />
             </div>
@@ -146,7 +147,7 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
         </div>
 
         <div className="specimen-card rounded-4xl p-8">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-3 mb-6 text-center md:text-left">
             <div className="p-2 rounded-xl bg-primary/10 text-primary">
               <Trees className="w-5 h-5" />
             </div>
@@ -168,8 +169,8 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
       {/* Map and Protection Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="specimen-card rounded-4xl p-8 flex flex-col">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col md:flex-row items-center md:items-start justify-between mb-6 text-center md:text-left gap-4">
+            <div className="flex flex-col md:flex-row items-center gap-3">
               <div className="p-2 rounded-xl bg-primary/10 text-primary">
                 <MapPin className="w-5 h-5" />
               </div>
@@ -191,7 +192,7 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
             {isEditing ? (
               <div className="space-y-4 relative z-10 animate-in fade-in zoom-in-95 duration-300">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Town / Location</label>
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider ml-1">Location</label>
                   <Input 
                     placeholder="e.g. London, Yellowstone National Park"
                     value={placeName} 
@@ -235,7 +236,7 @@ export function AnalysisResult({ data, onLocationUpdate }: AnalysisResultProps) 
         </div>
 
         <div className="specimen-card rounded-4xl p-8">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-3 mb-6 text-center md:text-left">
             <div className="p-2 rounded-xl bg-red-500/10 text-red-600">
               <Heart className="w-5 h-5" />
             </div>
