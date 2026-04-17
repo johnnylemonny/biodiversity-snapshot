@@ -42,7 +42,7 @@ export default defineConfig({
       }
     })
   ],
-  base: "/nature-node/",
+  base: "/naturenode/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

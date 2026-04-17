@@ -28,8 +28,8 @@
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/johnnylemonny/nature-node.git
-   cd nature-node
+   git clone https://github.com/johnnylemonny/naturenode.git
+   cd naturenode
    ```
 
 2. **Install dependencies**:

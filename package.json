@@ -1,10 +1,10 @@
 {
-  "name": "nature-node",
+  "name": "naturenode",
   "private": true,
   "version": "1.0.0",
   "author": "Janek",
   "type": "module",
-  "homepage": "https://johnnylemonny.github.io/nature-node/",
+  "homepage": "https://johnnylemonny.github.io/naturenode/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
