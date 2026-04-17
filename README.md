@@ -7,6 +7,8 @@
 
 **NatureNode** is a professional biodiversity research and identification tool. Designed for field researchers and nature enthusiasts, it leverages state-of-the-art AI to transform simple photos into comprehensive ecological dossiers.
 
+![NatureNode Desktop Interface](./photos/desktop3.webp)
+
 ## 🌟 Key Features
 
 -   **Botanical Precision UI**: A high-density, research-oriented design system using Tailwind CSS v4 and the OKLCH color model for superior visual clarity.
