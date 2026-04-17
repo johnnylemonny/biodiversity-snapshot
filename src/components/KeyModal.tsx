@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,10 @@ interface KeyModalProps {
 
 export function KeyModal({ isOpen, onClose, onSave, currentKey }: KeyModalProps) {
   const [key, setKey] = useState(currentKey);
+
+  useEffect(() => {
+    setKey(currentKey);
+  }, [currentKey, isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

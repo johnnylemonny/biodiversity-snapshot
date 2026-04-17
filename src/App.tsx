@@ -10,7 +10,7 @@ import { Input } from "./components/ui/input";
 import { Settings, Globe, Leaf, Key, ChevronRight } from "lucide-react";
 
 function App() {
-  const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem("gemini_api_key") || "");
+  const [apiKey, setApiKey] = useState<string>("");
   const [isKeyModalOpen, setIsKeyModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<BiodiversityInfo | null>(null);
@@ -23,7 +23,6 @@ function App() {
 
   const handleSaveKey = (key: string) => {
     setApiKey(key);
-    localStorage.setItem("gemini_api_key", key);
     setIsKeyModalOpen(false);
     setError(null);
   };
