@@ -1,8 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <path d="M16 30C16 30 2 24 2 13C2 7 7 2 13 2C16 2 19 4 21 7C23 4 26 2 29 2C35 2 40 7 40 13C40 24 26 30 26 30" fill="none" />
-  <!-- Bold Leaf Shape -->
-  <path d="M16 28C16 28 4 22 4 12C4 7 8 3 13 3C16 3 18 5 20 8C22 5 24 3 27 3C32 3 36 7 36 12C36 22 24 28 24 28" fill="#10b981" />
-  <path d="M16 28V12" stroke="white" stroke-width="2" stroke-linecap="round" />
-  <path d="M16 22L10 18" stroke="white" stroke-width="1.5" stroke-linecap="round" />
-  <path d="M16 18L22 14" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="8" fill="#15803d"/>
+  <path d="M16 8C12 12 10 16 10 20C10 23.3137 12.6863 26 16 26C19.3137 26 22 23.3137 22 20C22 16 20 12 16 8Z" fill="white"/>
+  <path d="M16 14V26" stroke="#15803d" stroke-width="2" stroke-linecap="round"/>
 </svg>

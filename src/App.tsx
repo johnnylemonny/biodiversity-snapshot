@@ -58,7 +58,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col items-center selection:bg-primary/20">
       <nav className="w-full border-b bg-background sticky top-0 z-50">
-        <div className="container max-w-6xl h-16 flex items-center justify-between px-6">
+        <div className="container mx-auto max-w-6xl h-16 flex items-center justify-between px-6">
           <div className="flex items-center gap-3">
             <div className="p-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20">
               <Leaf className="w-5 h-5" />
@@ -81,7 +81,7 @@ function App() {
         </div>
       </nav>
 
-      <main className="flex-1 w-full max-w-4xl py-16 px-6 relative flex flex-col items-center overflow-hidden">
+      <main className="flex-1 w-full max-w-4xl mx-auto py-16 px-6 relative flex flex-col items-center overflow-hidden">
         {/* Large background decorative element */}
         <div className="absolute top-40 -left-20 w-96 h-96 bg-primary/3 rounded-full blur-3xl pointer-events-none -z-10" />
         <Leaf className="absolute top-20 -left-20 w-80 h-80 text-primary/3 -rotate-12 pointer-events-none -z-10" />
@@ -111,7 +111,7 @@ function App() {
                       Gemini API Access
                     </label>
                     <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
-                      Ref. NN-2026-ALPHA
+                      NatureNode Access
                     </p>
                   </div>
                 </div>
@@ -187,36 +187,47 @@ function App() {
         )}
       </main>
 
-      <footer className="w-full border-t py-12 bg-background">
-        <div className="container max-w-6xl px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <div className="flex items-center gap-2 opacity-80">
-                <Leaf className="w-4 h-4 text-primary" />
-                <span className="text-lg font-serif font-bold tracking-tight">NatureNode</span>
+      <footer className="w-full border-t py-12 bg-background/50 backdrop-blur-sm">
+        <div className="container mx-auto max-w-6xl px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-12">
+            <div className="flex flex-col items-center md:items-start gap-4 max-w-sm">
+              <div className="flex items-center gap-2">
+                <Leaf className="w-5 h-5 text-primary" />
+                <span className="text-xl font-serif font-bold tracking-tight">NatureNode</span>
               </div>
-              <p className="text-xs text-muted-foreground max-w-xs leading-relaxed text-center md:text-left">
+              <p className="text-xs text-muted-foreground leading-relaxed text-center md:text-left">
                 Advanced botanical identification platform for researchers and nature enthusiasts. 
-                Powered by Google Gemini.
+                Utilizing state-of-the-art AI to map and protect global biodiversity.
+              </p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mt-2">
+                © 2026 NatureNode • Earth Day Edition
               </p>
             </div>
 
-            <div className="flex flex-col items-center md:items-end gap-6">
-              <div className="flex gap-8 text-sm font-semibold">
-                <a href="https://dev.to" className="text-muted-foreground hover:text-primary transition-colors">Project</a>
-                <a href="https://github.com" className="text-muted-foreground hover:text-primary transition-colors">Documentation</a>
-                {apiKey && (
-                  <button 
-                    onClick={() => setIsKeyModalOpen(true)}
-                    className="text-primary hover:text-primary/80 transition-colors"
-                  >
-                    API Settings
-                  </button>
-                )}
+            <div className="grid grid-cols-2 gap-12 md:gap-24">
+              <div className="flex flex-col gap-4">
+                <h4 className="text-xs font-bold uppercase tracking-widest text-primary">Resources</h4>
+                <div className="flex flex-col gap-2 text-sm">
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Project Info</a>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Documentation</a>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">API Guide</a>
+                </div>
               </div>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium opacity-50">
-                © 2026 NatureNode Research • Earth Day Edition
-              </p>
+              <div className="flex flex-col gap-4">
+                <h4 className="text-xs font-bold uppercase tracking-widest text-primary">Platform</h4>
+                <div className="flex flex-col gap-2 text-sm">
+                  {apiKey && (
+                    <button 
+                      onClick={() => setIsKeyModalOpen(true)}
+                      className="text-muted-foreground hover:text-primary transition-colors text-left"
+                    >
+                      Settings
+                    </button>
+                  )}
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Sustainability</a>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
