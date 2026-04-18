@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
-import { Upload, ImageIcon, X, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Upload, X, Loader2, Camera, FolderOpen } from "lucide-react";
+import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 
 interface ImageUploaderProps {
@@ -48,7 +48,21 @@ export function ImageUploader({ onImageSelected, isLoading }: ImageUploaderProps
 
           <input
             type="file"
-            className="absolute inset-0 opacity-0 cursor-pointer"
+            id="file-upload"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handleFile(file);
+            }}
+            accept="image/*"
+            disabled={isLoading}
+          />
+
+          <input
+            type="file"
+            id="camera-capture"
+            className="hidden"
+            capture="environment"
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) handleFile(file);
@@ -63,14 +77,27 @@ export function ImageUploader({ onImageSelected, isLoading }: ImageUploaderProps
           
           <div className="text-center space-y-2">
             <p className="text-2xl font-serif font-semibold">Ready to identify?</p>
-            <p className="text-muted-foreground">Drag your nature photo here or click to browse</p>
+            <p className="text-muted-foreground">Drag your nature photo here or use the options below</p>
           </div>
           
-          <div className="flex gap-4 mt-2">
-            <div className="flex items-center gap-2 text-xs font-semibold tracking-wider text-muted-foreground uppercase bg-muted px-4 py-2 rounded-full border border-border">
-              <ImageIcon className="w-4 h-4" />
-              Capture or Upload
-            </div>
+          <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full max-w-sm">
+            <Button
+              type="button"
+              className="flex-1 h-12 rounded-2xl gap-2 font-bold shadow-lg shadow-primary/10"
+              onClick={() => document.getElementById("camera-capture")?.click()}
+            >
+              <Camera className="w-5 h-5" />
+              Take Photo
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              className="flex-1 h-12 rounded-2xl gap-2 font-bold border border-primary/10"
+              onClick={() => document.getElementById("file-upload")?.click()}
+            >
+              <FolderOpen className="w-5 h-5" />
+              Upload Image
+            </Button>
           </div>
         </div>
       ) : (

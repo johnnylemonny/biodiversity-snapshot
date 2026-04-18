@@ -13,6 +13,7 @@
 
 -   **Botanical Precision UI**: A high-density, research-oriented design system using Tailwind CSS v4 and the OKLCH color model for superior visual clarity.
 -   **AI-Driven Identification**: Powered by **Google Gemini 3 Flash** for instant, high-accuracy recognition of plants, animals, insects, and fungi.
+-   **Direct Camera Capture**: Optimized for mobile field research with one-tap access to the device camera.
 -   **Specimen Journal**: A persistent, local history of all your discoveries, allowing you to build your own personal biodiversity database.
 -   **📱 PWA & Offline Support**: Fully installable as a Progressive Web App. Designed to work in the field with robust offline capabilities.
 -   **🗺️ Manual Location Mapping**: Easily log observation points by town or area name.
